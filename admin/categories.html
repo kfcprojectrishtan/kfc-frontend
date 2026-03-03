@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFC Admin - Categories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #E4002B;
+            --secondary: #202124;
+            --bg: #F8F9FA;
+            --surface: #FFFFFF;
+            --border: #E8EAED;
+            --text: #3C4043;
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #FCE8EB;
+            color: var(--primary);
+        }
+
+        /* Main */
+        .main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* Admin Key */
+        .key-input {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+            width: 250px;
+            font-size: 0.9rem;
+        }
+
+        .key-input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Button */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: #C80025;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--secondary);
+        }
+
+        .btn-outline:hover {
+            background: #f1f3f4;
+            border-color: #d1d3d4;
+        }
+
+        .btn-danger {
+            background: #e00;
+        }
+
+        /* Table */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            color: #5F6368;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.active {
+            background: #E6F4EA;
+            color: #1E8E3E;
+        }
+
+        .badge.inactive {
+            background: #FCE8E6;
+            color: #D93025;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius);
+            width: 450px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #5F6368;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mr-1 {
+            margin-right: 0.5rem;
+        }
+
+        .image-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-upload-area:hover {
+            border-color: var(--primary);
+            background: #FFF5F6;
+        }
+
+        .image-upload-area input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .image-upload-label {
+            font-size: 0.85rem;
+            color: #5F6368;
+            pointer-events: none;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 120px;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .thumb-img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .thumb-placeholder {
+            width: 48px;
+            height: 48px;
+            background: #F1F3F4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">KFC Admin</div>
+        <nav>
+            <a href="categories.html" class="nav-item active">Kategoriyalar</a>
+            <a href="foods.html" class="nav-item">Taomlar</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <div class="header">
+            <h1 class="title">Kategoriyalar</h1>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <input type="password" id="adminKey" class="key-input" placeholder="Admin Key" onchange="saveKey()">
+                <button class="btn" onclick="openModal()">+ Qo'shish</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Rasm</th>
+                        <th>Kalit (Key)</th>
+                        <th>Nomi</th>
+                        <th>Tartib</th>
+                        <th>Status</th>
+                        <th>Harakatlar</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="7" style="text-align:center;">Yuklanmoqda...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Yangi kategoriya</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="catForm" onsubmit="saveCategory(event)">
+                <input type="hidden" id="catId">
+                <div class="form-group">
+                    <label>Kalit (slug)</label>
+                    <input type="text" id="catKey" class="form-control" placeholder="Masalan: burgers" required>
+                </div>
+                <div class="form-group">
+                    <label>Ko'rinadigan nomi</label>
+                    <input type="text" id="catTitle" class="form-control" placeholder="Masalan: Burgerlar" required>
+                </div>
+                <div class="form-group">
+                    <label>Tartib (Sort Order)</label>
+                    <input type="number" id="catSort" class="form-control" value="0" required>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" id="catActive" checked>
+                    <label for="catActive" style="margin:0">Faol</label>
+                </div>
+                <div class="form-group">
+                    <label>Kategoriya rasmi</label>
+                    <div class="image-upload-area" id="catImageUploadArea">
+                        <input type="file" id="catImage" accept="image/*" onchange="previewCatImage(this)">
+                        <div class="image-upload-label" id="catImageLabel">📷 Rasm tanlang</div>
+                        <img class="image-preview" id="catImagePreview">
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:2rem;">
+                    <button type="button" class="btn btn-outline" onclick="closeModal()">Bekor qilish</button>
+                    <button type="submit" class="btn">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://kfc-backend-kfcprojectrishton-e94b2235.koyeb.app';
+        let categories = [];
+
+        window.onload = () => {
+            const savedKey = localStorage.getItem('kfc_admin_key');
+            if (savedKey) document.getElementById('adminKey').value = savedKey;
+            loadCategories();
+        };
+
+        function saveKey() {
+            localStorage.setItem('kfc_admin_key', document.getElementById('adminKey').value);
+            loadCategories();
+        }
+
+        function getHeaders() {
+            return {
+                'X-Admin-Key': document.getElementById('adminKey').value || ''
+            };
+        }
+
+        async function loadCategories() {
+            try {
+                // public GET
+                const res = await fetch(`${API_URL}/api/menu/categories`);
+                if (res.ok) {
+                    categories = await res.json();
+                    // sort
+                    categories.sort((a, b) => a.sort_order - b.sort_order);
+                    renderTable();
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;color:red;">Xatolik yuz berdi</td></tr>';
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            if (categories.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Kategoriyalar yo\'q</td></tr>';
+                return;
+            }
+            categories.forEach(c => {
+                const tr = document.createElement('tr');
+                const thumbHtml = c.image_url
+                    ? `<img src="${API_URL}${c.image_url}" class="thumb-img" alt="${c.title}">`
+                    : `<div class="thumb-placeholder">${c.image_emoji || '📁'}</div>`;
+                tr.innerHTML = `
+                    <td>${c.id}</td>
+                    <td>${thumbHtml}</td>
+                    <td><strong>${c.key}</strong></td>
+                    <td>${c.title}</td>
+                    <td>${c.sort_order}</td>
+                    <td>
+                        <span class="badge ${c.is_active ? 'active' : 'inactive'}">
+                            ${c.is_active ? 'Faol' : 'Nofaol'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline mr-1" style="padding:0.3rem 0.6rem; font-size:0.8rem;" onclick="editCategory(${c.id})">Tahrirlash</button>
+                        <button class="btn btn-danger" style="padding:0.3rem 0.6rem; font-size:0.8rem;" onclick="deleteCategory(${c.id})">O'chirish</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function previewCatImage(input) {
+            const preview = document.getElementById('catImagePreview');
+            const label = document.getElementById('catImageLabel');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    label.textContent = input.files[0].name;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function openModal(cat = null) {
+            const form = document.getElementById('catForm');
+            form.reset();
+            const preview = document.getElementById('catImagePreview');
+            const label = document.getElementById('catImageLabel');
+            preview.style.display = 'none';
+            preview.src = '';
+            label.textContent = '📷 Rasm tanlang';
+
+            if (cat) {
+                document.getElementById('modalTitle').textContent = 'Kategoriyani tahrirlash';
+                document.getElementById('catId').value = cat.id;
+                document.getElementById('catKey').value = cat.key;
+                document.getElementById('catTitle').value = cat.title;
+                document.getElementById('catSort').value = cat.sort_order || 0;
+                document.getElementById('catActive').checked = cat.is_active;
+                if (cat.image_url) {
+                    preview.src = `${API_URL}${cat.image_url}`;
+                    preview.style.display = 'block';
+                    label.textContent = 'Joriy rasm (yangi tanlash mumkin)';
+                }
+            } else {
+                document.getElementById('modalTitle').textContent = 'Yangi kategoriya';
+                document.getElementById('catId').value = '';
+                document.getElementById('catActive').checked = true;
+            }
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        function editCategory(id) {
+            const cat = categories.find(c => c.id === id);
+            if (cat) openModal(cat);
+        }
+
+        async function saveCategory(e) {
+            e.preventDefault();
+            const id = document.getElementById('catId').value;
+
+            const formData = new FormData();
+            formData.append('key', document.getElementById('catKey').value);
+            formData.append('title', document.getElementById('catTitle').value);
+            formData.append('sort_order', parseInt(document.getElementById('catSort').value || 0));
+            formData.append('is_active', document.getElementById('catActive').checked);
+            const imageFile = document.getElementById('catImage').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            const url = id ? `${API_URL}/api/menu/categories/${id}` : `${API_URL}/api/menu/categories`;
+            const method = id ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method,
+                    headers: getHeaders(),
+                    body: formData
+                });
+
+                if (res.ok) {
+                    closeModal();
+                    loadCategories();
+                } else {
+                    alert('Xatolik! Admin kalitini tekshiring yoki serverda muammo.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Tarmoq xatosi');
+            }
+        }
+
+        async function deleteCategory(id) {
+            if (!confirm('Rostdan ham o\'chirmoqchimisiz?')) return;
+            try {
+                const res = await fetch(`${API_URL}/api/menu/categories/${id}`, {
+                    method: 'DELETE',
+                    headers: getHeaders()
+                });
+                if (res.ok) {
+                    loadCategories();
+                } else if (res.status === 409) {
+                    alert('Bu kategoriyada taomlar mavjud! Oldin taomlarni o\'chiring.');
+                } else {
+                    alert('O\'chirishda xatolik! Admin kalitini tekshiring.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Tarmoq xatosi');
+            }
+        }
+    </script>
+</body>
+
+</html>
