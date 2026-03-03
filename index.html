@@ -3016,6 +3016,23 @@
                 </div>
             </div>
 
+            <!-- GPS Location Check Notice -->
+            <div id="gpsCheckNotice"
+                style="display:none; margin-bottom:12px; padding:12px 14px; border-radius:14px; font-size:0.85rem; font-family:'Poppins',sans-serif; transition:all 0.3s;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span id="gpsCheckIcon" style="flex-shrink:0;"></span>
+                    <span id="gpsCheckText" style="flex:1; line-height:1.4;"></span>
+                </div>
+                <button id="gpsQuickAddBtn" onclick="quickAddGpsLocation()"
+                    style="display:none; margin-top:10px; width:100%; padding:10px; background:#FAB95B; color:#fff; border:none; border-radius:10px; font-size:0.85rem; font-weight:700; cursor:pointer; font-family:'Poppins',sans-serif; display:flex; align-items:center; justify-content:center; gap:6px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                    </svg>
+                    Joriy joylashuvni qo'shish
+                </button>
+            </div>
+
             <button class="confirm-btn" id="confirmBtn" onclick="placeOrder()"
                 style="display:flex; align-items:center; justify-content:center; gap:8px;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -4271,11 +4288,141 @@
 
             document.getElementById('checkoutOverlay').classList.add('active');
             document.getElementById('checkoutSheet').classList.add('active');
+
+            // GPS location check every time checkout opens
+            checkGpsAtCheckout();
         }
 
         function closeCheckout() {
             document.getElementById('checkoutOverlay').classList.remove('active');
             document.getElementById('checkoutSheet').classList.remove('active');
+        }
+
+        // ========================
+        // GPS CHECK AT CHECKOUT
+        // ========================
+        let _checkoutGpsLat = null;
+        let _checkoutGpsLng = null;
+
+        function getDistanceKm(lat1, lng1, lat2, lng2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        function checkGpsAtCheckout() {
+            const notice = document.getElementById('gpsCheckNotice');
+            const icon = document.getElementById('gpsCheckIcon');
+            const text = document.getElementById('gpsCheckText');
+            const quickBtn = document.getElementById('gpsQuickAddBtn');
+            if (!notice) return;
+
+            // Reset
+            notice.style.display = 'none';
+            quickBtn.style.display = 'none';
+
+            if (!navigator.geolocation) return;
+
+            // Show loading state
+            notice.style.display = 'block';
+            notice.style.background = '#F5F5F5';
+            notice.style.border = '1.5px solid #E0E0E0';
+            icon.innerHTML = '⏳';
+            text.innerHTML = '<span style="color:#666;">Joylashuv tekshirilmoqda...</span>';
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    _checkoutGpsLat = pos.coords.latitude;
+                    _checkoutGpsLng = pos.coords.longitude;
+
+                    const addrs = loadAddresses();
+                    const selId = getSelectedId();
+                    const selAddr = addrs.find(a => a.id === selId);
+
+                    if (selAddr && selAddr.lat && selAddr.lng) {
+                        const dist = getDistanceKm(selAddr.lat, selAddr.lng, _checkoutGpsLat, _checkoutGpsLng);
+
+                        if (dist < 0.5) {
+                            // Within 500m — OK
+                            notice.style.background = '#E8F5E9';
+                            notice.style.border = '1.5px solid #81C784';
+                            icon.innerHTML = '✅';
+                            text.innerHTML = '<span style="color:#388E3C;font-weight:600;">Joylashuvingiz manzilga mos</span>';
+                            quickBtn.style.display = 'none';
+                        } else {
+                            // Far away — show warning + quick add
+                            notice.style.background = '#FFF8E1';
+                            notice.style.border = '1.5px solid #FFB300';
+                            icon.innerHTML = '⚠️';
+                            text.innerHTML = '<span style="color:#F57F17;font-weight:600;">Siz boshqa joydasiz!</span><br><span style="color:#999;font-size:0.8rem;">Tanlangan manzildan ' + dist.toFixed(1) + ' km uzoqdasiz. Joriy joylashuvni qo\'shishni xohlaysizmi?</span>';
+                            quickBtn.style.display = 'flex';
+                        }
+                    } else {
+                        // No address selected — prompt to add GPS
+                        notice.style.background = '#FFF8E1';
+                        notice.style.border = '1.5px solid #FFB300';
+                        icon.innerHTML = '📍';
+                        text.innerHTML = '<span style="color:#F57F17;font-weight:600;">Manzil tanlanmagan!</span><br><span style="color:#999;font-size:0.8rem;">GPS orqali joriy joylashuvingizni qo\'shing</span>';
+                        quickBtn.style.display = 'flex';
+                    }
+                },
+                () => {
+                    // GPS denied or error
+                    notice.style.background = '#FFEBEE';
+                    notice.style.border = '1.5px solid #EF9A9A';
+                    icon.innerHTML = '📍';
+                    text.innerHTML = '<span style="color:#C62828;font-weight:600;">GPS ruxsati berilmadi</span><br><span style="color:#999;font-size:0.8rem;">Manzilni qo\'lda tanlang</span>';
+                    quickBtn.style.display = 'none';
+                },
+                { enableHighAccuracy: true, timeout: 8000 }
+            );
+        }
+
+        async function quickAddGpsLocation() {
+            if (!_checkoutGpsLat || !_checkoutGpsLng) return;
+
+            const quickBtn = document.getElementById('gpsQuickAddBtn');
+            if (quickBtn) { quickBtn.disabled = true; quickBtn.textContent = '⏳ Saqlanmoqda...'; }
+
+            let label = await reverseGeocode(_checkoutGpsLat, _checkoutGpsLng);
+            if (!label) label = `${_checkoutGpsLat.toFixed(5)}, ${_checkoutGpsLng.toFixed(5)}`;
+
+            const newAddr = {
+                id: 'addr_' + Date.now(),
+                lat: _checkoutGpsLat,
+                lng: _checkoutGpsLng,
+                label: label,
+                comment: 'GPS orqali aniqlangan',
+                createdAt: Date.now()
+            };
+
+            const list = loadAddresses();
+            list.push(newAddr);
+            saveAddresses(list);
+            setSelectedId(newAddr.id);
+
+            // Update checkout address display
+            const gpsLabel = document.getElementById('checkoutGpsLabel');
+            gpsLabel.textContent = label;
+            gpsLabel.parentElement.style.borderColor = '#388E3C';
+            gpsLabel.parentElement.style.background = '#E8F5E9';
+            gpsLabel.parentElement.style.color = '#388E3C';
+
+            // Update notice to green
+            const notice = document.getElementById('gpsCheckNotice');
+            const iconEl = document.getElementById('gpsCheckIcon');
+            const textEl = document.getElementById('gpsCheckText');
+            notice.style.background = '#E8F5E9';
+            notice.style.border = '1.5px solid #81C784';
+            iconEl.innerHTML = '✅';
+            textEl.innerHTML = '<span style="color:#388E3C;font-weight:600;">Joriy joylashuv saqlandi!</span>';
+            if (quickBtn) quickBtn.style.display = 'none';
+
+            updateHeaderLocation();
         }
 
         // ========================
