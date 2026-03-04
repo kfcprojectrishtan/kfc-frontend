@@ -2569,7 +2569,11 @@
         <div id="restaurantClosedBanner"
             style="display:none; margin:0 1rem 0.5rem; padding:10px 14px; border-radius:12px; background:#FFF3E0; border:1px solid #FFE0B2; font-family:'Poppins',sans-serif;">
             <div style="display:flex; align-items:center; gap:8px;">
-                <span style="font-size:1.1rem;">🕐</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E65100" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg>
                 <div>
                     <div style="font-size:0.82rem; font-weight:600; color:#E65100;">Restoran hozir yopiq</div>
                     <div style="font-size:0.75rem; color:#BF360C; opacity:0.7;">Ish vaqti: 09:00 – 00:00</div>
@@ -2582,7 +2586,7 @@
             <div class="hero-logo" id="heroLogoBox">
                 <!-- Logo rasmingizni shu yerga qo'ying: -->
                 <!-- <img src="logo.png" alt="Logo"> -->
-                <span class="hero-logo-placeholder">🍗</span>
+                <span class="hero-logo-placeholder"></span>
             </div>
             <div class="hero-text">
                 <div class="hero-title" id="heroTitle">KFC Riston</div>
@@ -3049,7 +3053,11 @@
             <div id="restaurantClosedNotice"
                 style="display:none; margin-bottom:12px; padding:14px; border-radius:14px; background:#FFEBEE; border:1.5px solid #EF9A9A; font-family:'Poppins',sans-serif;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="font-size:1.2rem;">🕐</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C62828" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
                     <div>
                         <div style="font-size:0.88rem; font-weight:700; color:#C62828;">Restoran hozir ishlamaydi</div>
                         <div style="font-size:0.8rem; color:#999; margin-top:2px;">Ish vaqti: 09:00 – 00:00</div>
@@ -3336,10 +3344,10 @@
                 checkoutDeliveryLabel: "Yetkazib berish",
                 checkoutDeliveryFree: "Bepul",
                 checkoutTotalLabel: "Jami to'lov",
-                confirmBtn: "✅ Tasdiqlash",
+                confirmBtn: "Tasdiqlash",
                 heroTitle: "KFC Riston",
                 heroSub: "Tez va mazali taom yetkazish",
-                successTitle: "Buyurtma berildi! 🎉",
+                successTitle: "Buyurtma berildi!",
                 successSub: "Buyurtmangiz qabul qilindi.\nAdmin tez orada tasdiqlaydi.",
                 cancelTimerLabel: "Bekor qilish imkoni",
                 cancelOrderBtn: "Buyurtmani bekor qilish",
@@ -3421,10 +3429,10 @@
                 checkoutDeliveryLabel: "Доставка",
                 checkoutDeliveryFree: "Бесплатно",
                 checkoutTotalLabel: "Итого к оплате",
-                confirmBtn: "✅ Подтвердить",
+                confirmBtn: "Подтвердить",
                 heroTitle: "KFC Рiston",
                 heroSub: "Быстрая и вкусная доставка еды",
-                successTitle: "Заказ принят! 🎉",
+                successTitle: "Заказ принят!",
                 successSub: "Ваш заказ получен.\nАдмин скоро подтвердит.",
                 cancelTimerLabel: "Можно отменить",
                 cancelOrderBtn: "Отменить заказ",
@@ -3666,16 +3674,16 @@
                 return;
             }
             const btn = document.getElementById('gpsBtn');
-            if (btn) { btn.disabled = true; btn.textContent = '⏳ Aniqlanmoqda...'; }
+            if (btn) { btn.disabled = true; btn.textContent = 'Aniqlanmoqda...'; }
             navigator.geolocation.getCurrentPosition(
                 pos => {
                     _selectedLat = pos.coords.latitude;
                     _selectedLng = pos.coords.longitude;
                     if (_mapInstance) _mapInstance.setView([_selectedLat, _selectedLng], 17);
-                    if (btn) { btn.disabled = false; btn.textContent = '📍 GPS bilan aniqlash'; }
+                    if (btn) { btn.disabled = false; btn.textContent = 'GPS bilan aniqlash'; }
                 },
                 err => {
-                    if (btn) { btn.disabled = false; btn.textContent = '📍 GPS bilan aniqlash'; }
+                    if (btn) { btn.disabled = false; btn.textContent = 'GPS bilan aniqlash'; }
                     alert('GPS ruxsati berilmadi yoki aniqlashda xato.');
                 },
                 { enableHighAccuracy: true, timeout: 10000 }
@@ -3714,7 +3722,7 @@
         // --- Confirm map (step 1 → step 2) ---
         async function confirmMap() {
             const btn = document.getElementById('confirmMapBtn');
-            if (btn) { btn.disabled = true; btn.textContent = '⏳ Aniqlanmoqda...'; }
+            if (btn) { btn.disabled = true; btn.textContent = 'Aniqlanmoqda...'; }
             let label = await reverseGeocode(_selectedLat, _selectedLng);
             if (!label) label = `${_selectedLat.toFixed(5)}, ${_selectedLng.toFixed(5)} (Manzil topilmadi, lokatsiya saqlanadi.)`;
             if (btn) { btn.disabled = false; btn.textContent = 'Tasdiqlash'; }
@@ -4334,7 +4342,7 @@
                 confirmBtn.style.background = '#E0E0E0';
                 confirmBtn.style.color = '#999';
                 confirmBtn.style.cursor = 'not-allowed';
-                confirmBtn.innerHTML = '🕐 Restoran yopiq';
+                confirmBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Restoran yopiq';
                 if (closedNotice) closedNotice.style.display = 'block';
             } else {
                 confirmBtn.disabled = false;
@@ -4400,7 +4408,7 @@
             notice.style.display = 'block';
             notice.style.background = '#F5F5F5';
             notice.style.border = '1.5px solid #E0E0E0';
-            icon.innerHTML = '⏳';
+            icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
             text.innerHTML = '<span style="color:#666;">Joylashuv tekshirilmoqda...</span>';
 
             navigator.geolocation.getCurrentPosition(
@@ -4419,14 +4427,14 @@
                             // Within 500m — OK
                             notice.style.background = '#E8F5E9';
                             notice.style.border = '1.5px solid #81C784';
-                            icon.innerHTML = '✅';
+                            icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#388E3C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
                             text.innerHTML = '<span style="color:#388E3C;font-weight:600;">Joylashuvingiz manzilga mos</span>';
                             quickBtn.style.display = 'none';
                         } else {
                             // Far away — show warning + quick add
                             notice.style.background = '#FFF8E1';
                             notice.style.border = '1.5px solid #FFB300';
-                            icon.innerHTML = '⚠️';
+                            icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F57F17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
                             text.innerHTML = '<span style="color:#F57F17;font-weight:600;">Siz boshqa joydasiz!</span><br><span style="color:#999;font-size:0.8rem;">Tanlangan manzildan ' + dist.toFixed(1) + ' km uzoqdasiz. Joriy joylashuvni qo\'shishni xohlaysizmi?</span>';
                             quickBtn.style.display = 'flex';
                         }
@@ -4434,7 +4442,7 @@
                         // No address selected — prompt to add GPS
                         notice.style.background = '#FFF8E1';
                         notice.style.border = '1.5px solid #FFB300';
-                        icon.innerHTML = '📍';
+                        icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F57F17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
                         text.innerHTML = '<span style="color:#F57F17;font-weight:600;">Manzil tanlanmagan!</span><br><span style="color:#999;font-size:0.8rem;">GPS orqali joriy joylashuvingizni qo\'shing</span>';
                         quickBtn.style.display = 'flex';
                     }
@@ -4443,7 +4451,7 @@
                     // GPS denied or error
                     notice.style.background = '#FFEBEE';
                     notice.style.border = '1.5px solid #EF9A9A';
-                    icon.innerHTML = '📍';
+                    icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C62828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
                     text.innerHTML = '<span style="color:#C62828;font-weight:600;">GPS ruxsati berilmadi</span><br><span style="color:#999;font-size:0.8rem;">Manzilni qo\'lda tanlang</span>';
                     quickBtn.style.display = 'none';
                 },
@@ -4455,7 +4463,7 @@
             if (!_checkoutGpsLat || !_checkoutGpsLng) return;
 
             const quickBtn = document.getElementById('gpsQuickAddBtn');
-            if (quickBtn) { quickBtn.disabled = true; quickBtn.textContent = '⏳ Saqlanmoqda...'; }
+            if (quickBtn) { quickBtn.disabled = true; quickBtn.textContent = 'Saqlanmoqda...'; }
 
             let label = await reverseGeocode(_checkoutGpsLat, _checkoutGpsLng);
             if (!label) label = `${_checkoutGpsLat.toFixed(5)}, ${_checkoutGpsLng.toFixed(5)}`;
@@ -4487,7 +4495,7 @@
             const textEl = document.getElementById('gpsCheckText');
             notice.style.background = '#E8F5E9';
             notice.style.border = '1.5px solid #81C784';
-            iconEl.innerHTML = '✅';
+            iconEl.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#388E3C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
             textEl.innerHTML = '<span style="color:#388E3C;font-weight:600;">Joriy joylashuv saqlandi!</span>';
             if (quickBtn) quickBtn.style.display = 'none';
 
@@ -4617,7 +4625,7 @@
 
             // Confirm tugmasini loading qilish
             const confirmBtn = document.getElementById('confirmBtn');
-            if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = '⏳ Yuborilmoqda...'; }
+            if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = 'Yuborilmoqda...'; }
 
             try {
                 // Backend ga yuborish
@@ -4707,12 +4715,12 @@
         let statusPollInterval = null;
 
         const STATUS_MAP = {
-            pending: { step: 1, uz: '🕐 Admin tasdiqlashini kutmoqda...', ru: '🕐 Ожидание подтверждения...' },
-            confirmed: { step: 1, uz: '✅ Tasdiqlandi! Tayyorlanmoqda...', ru: '✅ Подтверждён! Готовится...' },
-            cooking: { step: 2, uz: '🍗 Buyurtmangiz tayyorlanmoqda', ru: '🍗 Ваш заказ готовится' },
-            delivering: { step: 3, uz: '🚗 Yetkazuvchi yo\'lda!', ru: '🚗 Курьер в пути!' },
-            done: { step: 4, uz: '🎉 Yetkazildi! Xayr-mahsul!', ru: '🎉 Доставлен! Приятного аппетита!' },
-            cancelled: { step: 0, uz: '❌ Zakaz bekor qilindi', ru: '❌ Заказ отменён' },
+            pending: { step: 1, uz: 'Admin tasdiqlashini kutmoqda...', ru: 'Ожидание подтверждения...' },
+            confirmed: { step: 1, uz: 'Tasdiqlandi! Tayyorlanmoqda...', ru: 'Подтверждён! Готовится...' },
+            cooking: { step: 2, uz: 'Buyurtmangiz tayyorlanmoqda', ru: 'Ваш заказ готовится' },
+            delivering: { step: 3, uz: 'Yetkazuvchi yo\'lda!', ru: 'Курьер в пути!' },
+            done: { step: 4, uz: 'Yetkazildi! Xayr-mahsul!', ru: 'Доставлен! Приятного аппетита!' },
+            cancelled: { step: 0, uz: 'Zakaz bekor qilindi', ru: 'Заказ отменён' },
         };
 
         function updateStatusTracker(status) {

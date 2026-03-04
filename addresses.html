@@ -576,7 +576,7 @@
     function useGPS() {
       if (!navigator.geolocation) { alert('GPS bu qurilmada qo\'llab-quvvatlanmaydi.'); return; }
       const btn = document.getElementById('gpsBtn');
-      if (btn) { btn.disabled = true; btn.textContent = '⏳ Aniqlanmoqda...'; }
+      if (btn) { btn.disabled = true; btn.textContent = 'Aniqlanmoqda...'; }
       navigator.geolocation.getCurrentPosition(
         pos => {
           _selectedLat = pos.coords.latitude;
@@ -619,7 +619,7 @@
 
     async function confirmMap() {
       const btn = document.getElementById('confirmMapBtn');
-      if (btn) { btn.disabled = true; btn.textContent = '⏳ Aniqlanmoqda...'; }
+      if (btn) { btn.disabled = true; btn.textContent = 'Aniqlanmoqda...'; }
       let label = await reverseGeocode(_selectedLat, _selectedLng);
       if (!label) label = `${_selectedLat.toFixed(5)}, ${_selectedLng.toFixed(5)} (Manzil topilmadi, lokatsiya saqlanadi.)`;
       if (btn) { btn.disabled = false; btn.textContent = 'Tasdiqlash'; }

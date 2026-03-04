@@ -814,7 +814,7 @@
         if (canCancel) {
           cancelCardHtml = `
         <div style="padding:0.5rem 1rem 0.75rem;border-top:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between;">
-          <span style="font-size:0.8rem;color:#999;">⏱ ${remaining}s ${t('cancelHint')}</span>
+          <span style="font-size:0.8rem;color:#999;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" style="vertical-align:middle;margin-right:2px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${remaining}s ${t('cancelHint')}</span>
           <button onclick="event.stopPropagation();cancelOrder('${o.id}')" style="padding:0.4rem 1rem;background:#FF5252;color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:inherit;">${t('cancelBtn')}</button>
         </div>`;
         }
@@ -857,7 +857,7 @@
         return;
       }
 
-      el.innerHTML = `<div style="text-align:center;padding:3rem;color:#999;font-size:0.95rem;">⏳ Yuklanmoqda...</div>`;
+      el.innerHTML = `<div style="text-align:center;padding:3rem;color:#999;font-size:0.95rem;">Yuklanmoqda...</div>`;
 
       const backendOrders = await fetchOrdersByPhone();
 
