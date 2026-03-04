@@ -3632,7 +3632,7 @@
 
                 // Ensure modal has highest z-index and is fully visible
                 modal.style.zIndex = '99999';
-                modal.style.display = 'flex';
+                modal.style.display = 'block';
                 modal.style.pointerEvents = 'auto';
                 document.body.style.overflow = 'hidden';
 
@@ -4986,103 +4986,103 @@
                 <button class="login-prompt-no" onclick="dismissLoginPrompt()">Keyinroq</button>
             </div>
         </div>
+    </div>
 
-        <!-- ========================
+    <!-- ========================
          MAP PICKER MODAL
     ======================== -->
-        <div id="mapPickerModal"
-            style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(0,0,0,0.6);align-items:flex-end;justify-content:center;">
-            <!-- MAP STEP -->
-            <div id="mapPickerStep"
-                style="display:flex;flex-direction:column;width:100%;height:100%;background:#fff;position:relative;">
-                <!-- Header -->
-                <div
-                    style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #F0F0F0;background:#fff;flex-shrink:0;">
-                    <span style="font-weight:700;font-size:1rem;color:#202124;">Manzil tanlash</span>
-                    <button onclick="closeMapModal()" style="background:none;border:none;cursor:pointer;padding:4px;">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.5">
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                    </button>
-                </div>
-                <!-- Map container -->
-                <div style="flex:1;position:relative;">
-                    <div id="leafletMapContainer" style="width:100%;height:100%;"></div>
-                    <!-- Fixed center pin -->
-                    <div
-                        style="position:absolute;top:50%;left:50%;transform:translate(-50%,-100%);pointer-events:none;z-index:1000;">
-                        <svg width="36" height="48" viewBox="0 0 36 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M18 0C8.06 0 0 8.06 0 18C0 31.5 18 48 18 48C18 48 36 31.5 36 18C36 8.06 27.94 0 18 0Z"
-                                fill="#FAB95B" />
-                            <circle cx="18" cy="18" r="7" fill="white" />
-                            <circle cx="18" cy="18" r="4" fill="#FAB95B" />
-                            <ellipse cx="18" cy="46" rx="4" ry="2" fill="rgba(0,0,0,0.15)" />
-                        </svg>
-                    </div>
-                    <!-- GPS button -->
-                    <button id="gpsBtn" onclick="useGPS()"
-                        style="position:absolute;bottom:80px;right:12px;z-index:1000;background:#fff;border:none;border-radius:50px;padding:10px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.2);cursor:pointer;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:600;color:#FAB95B;display:flex;align-items:center;gap:6px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FAB95B" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="3 11 22 2 13 21 11 13 3 11" />
-                        </svg>
-                        GPS bilan aniqlash
-                    </button>
-                </div>
-                <!-- Bottom confirm -->
-                <div style="padding:12px 16px;background:#fff;border-top:1px solid #F0F0F0;flex-shrink:0;">
-                    <button id="confirmMapBtn" onclick="confirmMap()"
-                        style="width:100%;padding:14px;background:#FAB95B;border:none;border-radius:14px;color:#fff;font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">Tasdiqlash</button>
-                </div>
+    <div id="mapPickerModal"
+        style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(0,0,0,0.6);">
+        <!-- MAP STEP -->
+        <div id="mapPickerStep"
+            style="display:flex;flex-direction:column;width:100%;height:100%;background:#fff;position:relative;">
+            <!-- Header -->
+            <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #F0F0F0;background:#fff;flex-shrink:0;">
+                <span style="font-weight:700;font-size:1rem;color:#202124;">Manzil tanlash</span>
+                <button onclick="closeMapModal()" style="background:none;border:none;cursor:pointer;padding:4px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
             </div>
-
-            <!-- FORM STEP -->
-            <div id="mapFormStep"
-                style="display:none;flex-direction:column;width:100%;max-height:80vh;background:#fff;border-radius:20px 20px 0 0;overflow:hidden;">
+            <!-- Map container -->
+            <div style="flex:1;position:relative;">
+                <div id="leafletMapContainer" style="width:100%;height:100%;"></div>
+                <!-- Fixed center pin -->
                 <div
-                    style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #F0F0F0;">
-                    <button onclick="_showMapStep()"
-                        style="background:none;border:none;cursor:pointer;padding:4px;color:#FAB95B;font-size:0.9rem;font-weight:600;display:flex;align-items:center;gap:4px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FAB95B" stroke-width="2.5">
-                            <polyline points="15 18 9 12 15 6" />
-                        </svg>
-                        Orqaga
-                    </button>
-                    <span style="font-weight:700;font-size:1rem;color:#202124;">Manzilni tasdiqlang</span>
-                    <button onclick="closeMapModal()" style="background:none;border:none;cursor:pointer;padding:4px;">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.5">
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                    </button>
+                    style="position:absolute;top:50%;left:50%;transform:translate(-50%,-100%);pointer-events:none;z-index:1000;">
+                    <svg width="36" height="48" viewBox="0 0 36 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 0C8.06 0 0 8.06 0 18C0 31.5 18 48 18 48C18 48 36 31.5 36 18C36 8.06 27.94 0 18 0Z"
+                            fill="#FAB95B" />
+                        <circle cx="18" cy="18" r="7" fill="white" />
+                        <circle cx="18" cy="18" r="4" fill="#FAB95B" />
+                        <ellipse cx="18" cy="46" rx="4" ry="2" fill="rgba(0,0,0,0.15)" />
+                    </svg>
                 </div>
-                <div style="padding:16px;overflow-y:auto;flex:1;">
-                    <!-- Detected address (read-only) -->
-                    <div style="margin-bottom:14px;">
-                        <div
-                            style="font-size:0.8rem;font-weight:600;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">
-                            Aniqlangan manzil</div>
-                        <div style="background:#F5F5F5;border-radius:12px;padding:12px 14px;font-size:0.93rem;color:#202124;min-height:44px;"
-                            id="detectedAddressText"></div>
-                    </div>
-                    <!-- Comment field -->
-                    <div style="margin-bottom:14px;">
-                        <div
-                            style="font-size:0.8rem;font-weight:600;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">
-                            Izoh (ixtiyoriy)</div>
-                        <textarea id="addressCommentInput" placeholder="Masalan: 3-qavat, 12-xonadon, sariq eshik..."
-                            rows="2"
-                            style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid #E0E0E0;font-family:'Poppins',sans-serif;font-size:0.93rem;resize:none;outline:none;box-sizing:border-box;transition:border-color 0.2s;"></textarea>
-                    </div>
-                </div>
-                <div style="padding:12px 16px;background:#fff;border-top:1px solid #F0F0F0;">
-                    <button onclick="saveNewAddress()"
-                        style="width:100%;padding:14px;background:#FAB95B;border:none;border-radius:14px;color:#fff;font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">Saqlash</button>
-                </div>
+                <!-- GPS button -->
+                <button id="gpsBtn" onclick="useGPS()"
+                    style="position:absolute;bottom:80px;right:12px;z-index:1000;background:#fff;border:none;border-radius:50px;padding:10px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.2);cursor:pointer;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:600;color:#FAB95B;display:flex;align-items:center;gap:6px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FAB95B" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                    </svg>
+                    GPS bilan aniqlash
+                </button>
+            </div>
+            <!-- Bottom confirm -->
+            <div style="padding:12px 16px;background:#fff;border-top:1px solid #F0F0F0;flex-shrink:0;">
+                <button id="confirmMapBtn" onclick="confirmMap()"
+                    style="width:100%;padding:14px;background:#FAB95B;border:none;border-radius:14px;color:#fff;font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">Tasdiqlash</button>
             </div>
         </div>
+
+        <!-- FORM STEP -->
+        <div id="mapFormStep"
+            style="display:none;flex-direction:column;width:100%;max-height:80vh;background:#fff;border-radius:20px 20px 0 0;overflow:hidden;">
+            <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #F0F0F0;">
+                <button onclick="_showMapStep()"
+                    style="background:none;border:none;cursor:pointer;padding:4px;color:#FAB95B;font-size:0.9rem;font-weight:600;display:flex;align-items:center;gap:4px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FAB95B" stroke-width="2.5">
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                    Orqaga
+                </button>
+                <span style="font-weight:700;font-size:1rem;color:#202124;">Manzilni tasdiqlang</span>
+                <button onclick="closeMapModal()" style="background:none;border:none;cursor:pointer;padding:4px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <div style="padding:16px;overflow-y:auto;flex:1;">
+                <!-- Detected address (read-only) -->
+                <div style="margin-bottom:14px;">
+                    <div
+                        style="font-size:0.8rem;font-weight:600;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">
+                        Aniqlangan manzil</div>
+                    <div style="background:#F5F5F5;border-radius:12px;padding:12px 14px;font-size:0.93rem;color:#202124;min-height:44px;"
+                        id="detectedAddressText"></div>
+                </div>
+                <!-- Comment field -->
+                <div style="margin-bottom:14px;">
+                    <div
+                        style="font-size:0.8rem;font-weight:600;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">
+                        Izoh (ixtiyoriy)</div>
+                    <textarea id="addressCommentInput" placeholder="Masalan: 3-qavat, 12-xonadon, sariq eshik..."
+                        rows="2"
+                        style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid #E0E0E0;font-family:'Poppins',sans-serif;font-size:0.93rem;resize:none;outline:none;box-sizing:border-box;transition:border-color 0.2s;"></textarea>
+                </div>
+            </div>
+            <div style="padding:12px 16px;background:#fff;border-top:1px solid #F0F0F0;">
+                <button onclick="saveNewAddress()"
+                    style="width:100%;padding:14px;background:#FAB95B;border:none;border-radius:14px;color:#fff;font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">Saqlash</button>
+            </div>
+        </div>
+    </div>
 
 </body>
 
