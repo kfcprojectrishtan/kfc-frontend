@@ -3622,27 +3622,32 @@
             const modal = document.getElementById('mapPickerModal');
             if (!modal) return;
 
-            // Close the location sheet entirely so the map modal can take full screen without stacking bugs
+            // Close the location sheet entirely so the map modal can take full screen
             closeLocationSheet();
 
-            _mapStep = 'map';
-            _showMapStep();
-
-            // Ensure modal has highest z-index
-            modal.style.zIndex = '99999';
-            modal.style.display = 'flex';
-
+            // Small delay to let the sheet fully close, then show map
             setTimeout(() => {
-                if (!_mapInstance) {
-                    _mapInstance = L.map('leafletMapContainer', { zoomControl: false }).setView([_selectedLat, _selectedLng], 15);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' }).addTo(_mapInstance);
-                    L.control.zoom({ position: 'bottomright' }).addTo(_mapInstance);
-                    _mapInstance.on('moveend', onMapMoveUpdateCenter);
-                } else {
-                    _mapInstance.invalidateSize();
-                    _mapInstance.setView([_selectedLat, _selectedLng], 15);
-                }
-            }, 100);
+                _mapStep = 'map';
+                _showMapStep();
+
+                // Ensure modal has highest z-index and is fully visible
+                modal.style.zIndex = '99999';
+                modal.style.display = 'flex';
+                modal.style.pointerEvents = 'auto';
+                document.body.style.overflow = 'hidden';
+
+                setTimeout(() => {
+                    if (!_mapInstance) {
+                        _mapInstance = L.map('leafletMapContainer', { zoomControl: false }).setView([_selectedLat, _selectedLng], 15);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' }).addTo(_mapInstance);
+                        L.control.zoom({ position: 'bottomright' }).addTo(_mapInstance);
+                        _mapInstance.on('moveend', onMapMoveUpdateCenter);
+                    } else {
+                        _mapInstance.invalidateSize();
+                        _mapInstance.setView([_selectedLat, _selectedLng], 15);
+                    }
+                }, 150);
+            }, 50);
         }
 
         function _showMapStep() {
@@ -3665,6 +3670,7 @@
         function closeMapModal() {
             const modal = document.getElementById('mapPickerModal');
             if (modal) modal.style.display = 'none';
+            document.body.style.overflow = '';
         }
 
         // --- GPS button ---
