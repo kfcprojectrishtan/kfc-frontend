@@ -2565,6 +2565,18 @@
             </div>
         </div>
 
+        <!-- Restaurant Closed Notice (shown only when closed) -->
+        <div id="restaurantClosedBanner"
+            style="display:none; margin:0 1rem 0.5rem; padding:10px 14px; border-radius:12px; background:#FFF3E0; border:1px solid #FFE0B2; font-family:'Poppins',sans-serif;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:1.1rem;">🕐</span>
+                <div>
+                    <div style="font-size:0.82rem; font-weight:600; color:#E65100;">Restoran hozir yopiq</div>
+                    <div style="font-size:0.75rem; color:#BF360C; opacity:0.7;">Ish vaqti: 09:00 – 00:00</div>
+                </div>
+            </div>
+        </div>
+
         <!-- HERO BANNER -->
         <div class="hero-banner" id="heroBanner">
             <div class="hero-logo" id="heroLogoBox">
@@ -4046,15 +4058,15 @@
             const coinDiscount = (typeof coinsToUse !== 'undefined' ? coinsToUse : 0) * 1000;
             const total = Math.max(0, rawTotal - coinDiscount);
             if (cart.length > 0) {
+                document.getElementById('cartBarTotal').textContent = `${total.toLocaleString()} UZS`;
                 if (!isRestaurantOpen()) {
-                    // Restaurant closed — show closed message on cart bar
-                    document.getElementById('cartBarTotal').textContent = '🕐 Restoran yopiq (09:00 – 00:00)';
-                    bar.style.background = 'linear-gradient(135deg, #999 0%, #777 100%)';
+                    bar.style.opacity = '0.5';
                     bar.style.cursor = 'not-allowed';
+                    bar.style.pointerEvents = 'none';
                 } else {
-                    document.getElementById('cartBarTotal').textContent = `${total.toLocaleString()} UZS`;
-                    bar.style.background = '';
+                    bar.style.opacity = '1';
                     bar.style.cursor = 'pointer';
+                    bar.style.pointerEvents = 'auto';
                 }
                 bar.classList.add('visible');
             } else {
@@ -4063,10 +4075,7 @@
         }
 
         function openCart() {
-            if (!isRestaurantOpen()) {
-                alert('Restoran hozir ishlamaydi.\nIsh vaqti: 09:00 – 00:00');
-                return;
-            }
+            if (!isRestaurantOpen()) return;
             document.getElementById('cartModal').classList.add('active');
             updateCartModal();
         }
@@ -4253,6 +4262,12 @@
                 window._verifiedPhone = user.phone;
                 // Auto-detect GPS for logged-in users
                 autoDetectGPS();
+            }
+
+            // Show/hide restaurant closed banner
+            const closedBanner = document.getElementById('restaurantClosedBanner');
+            if (closedBanner) {
+                closedBanner.style.display = isRestaurantOpen() ? 'none' : 'block';
             }
         });
 
