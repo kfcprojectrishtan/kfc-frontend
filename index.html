@@ -4409,11 +4409,12 @@
         // RESTAURANT WORKING HOURS
         // ========================
         function isRestaurantOpen() {
-            const now = new Date();
-            const hour = now.getHours(); // 0-23
+            // const now = new Date();
+            // const hour = now.getHours(); // 0-23
             // Open: 09:00 – 00:00 (midnight)
             // Closed: 00:00 – 08:59
-            return hour >= 9; // hour 9-23 = open, hour 0-8 = closed
+            // return hour >= 9; // hour 9-23 = open, hour 0-8 = closed
+            return true; // Temporarily disabled for testing
         }
 
         // ========================
