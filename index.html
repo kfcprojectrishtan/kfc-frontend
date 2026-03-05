@@ -3980,10 +3980,10 @@
                 const productCards = catProducts.map(p => {
                     const inCart = cart.find(item => item.id === p.id);
                     return `
-                        <div class="product-card">
-                            <div class="product-image" onclick="showProductDetail(${p.id})">${pImg(p.image)}</div>
+                        <div class="product-card" onclick="addProductToCart(${p.id})">
+                            <div class="product-image">${pImg(p.image)}</div>
                             <div class="product-info">
-                                <div class="product-name" onclick="showProductDetail(${p.id})">${p.name}</div>
+                                <div class="product-name">${p.name}</div>
                                 ${inCart ? `
                                     <div class="quantity-selector" style="margin-top: 0.4rem; padding: 0.3rem;">
                                         <button class="qty-btn" style="width:30px;height:30px;font-size:1rem;" onclick="event.stopPropagation(); updateProductQty(${p.id}, -1)">−</button>
