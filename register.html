@@ -367,7 +367,8 @@
         <path d="M19 12H5M5 12l7 7M5 12l7-7" />
       </svg>
     </button>
-    <div class="reg-logo">🍗</div>
+    <div class="reg-logo"><img src="mainLogo.png" alt="M5 Chicken Logo"
+        style="width:100%; height:100%; object-fit:contain; border-radius:18px;"></div>
     <div class="reg-brand">KFC Riston</div>
     <div class="reg-tagline">Tez va mazali taom yetkazish</div>
   </div>
@@ -406,7 +407,15 @@
 
         <div id="signup-tgBotMsg"
           style="display:none; background:#FFF3E0; border-radius:12px; padding:1rem 1.1rem; margin-bottom:0.75rem; font-size:0.88rem; color:#BF360C; line-height:1.7; border:1.5px solid #FFCCBC;">
-          ⚠️ <b>Telefon raqam botda saqlanmagan!</b><br><br>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E65100" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            <b>Telefon raqam botda saqlanmagan!</b>
+          </div>
           Avval <a href="https://t.me/demo_kfs_menu_bot" target="_blank"
             style="color:#1565C0;font-weight:700;">@demo_kfs_menu_bot</a> ga boring va raqamingizni yuboring.
         </div>
@@ -620,7 +629,7 @@
       for (let i = 1; i <= total; i++) {
         const dot = document.createElement('div');
         dot.className = 'step-dot' + (i < current ? ' done' : i === current ? ' active' : '');
-        dot.textContent = i < current ? '✔' : i;
+        dot.innerHTML = i < current ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : i;
         wrap.appendChild(dot);
         if (i < total) {
           const line = document.createElement('div');

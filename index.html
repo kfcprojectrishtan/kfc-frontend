@@ -3241,12 +3241,15 @@
         };
         const API_URL = 'https://kfc-backend-kfcprojectrishton-e94b2235.koyeb.app';
 
+        const FALLBACK_SVG = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>';
+
         function pImg(emoji) {
             if (emoji && (emoji.startsWith('/static/') || emoji.startsWith('http'))) {
                 const fullUrl = emoji.startsWith('/static/') ? `${API_URL}${emoji}` : emoji;
                 return `<img src="${fullUrl}" alt="menu item">`;
             }
-            return IMG[emoji] || emoji;
+            if (emoji && IMG[emoji]) return IMG[emoji];
+            return FALLBACK_SVG;
         }
 
 
@@ -3954,7 +3957,7 @@
                 allCatGrid.innerHTML = categories.map(cat => `
                         <div class="category-card" onclick="showPage('homePage'); setTimeout(() => scrollToSection('${cat.key}'), 100)">
                             <div class="category-image" style="width: 100%; height: 150px; display: flex; align-items: center; justify-content: center; font-size: 5rem;">
-                            ${pImg(cat.image_url || cat.image_emoji || '🍔')}
+                            ${pImg(cat.image_url || cat.image_emoji)}
                             </div>
                             <div class="category-name">${cat.title}</div>
                         </div>
@@ -3964,7 +3967,7 @@
             // Render categories slider
             const sliderHTML = categories.map(cat => `
                 <div class="category-card" onclick="scrollToSection('${cat.key}')">
-                    <div class="category-image">${pImg(cat.image_url || cat.image_emoji || '🍔')}</div>
+                    <div class="category-image">${pImg(cat.image_url || cat.image_emoji)}</div>
                     <div class="category-name">${cat.title}</div>
                 </div>
             `).join('');

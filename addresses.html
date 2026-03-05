@@ -479,7 +479,11 @@
 
         const labelRow = document.createElement('div');
         labelRow.className = 'addr-label-row';
-        labelRow.textContent = addr.id === selId ? '✓ Tanlangan manzil' : 'Manzil';
+        if (addr.id === selId) {
+          labelRow.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg><span style="vertical-align:middle;">Tanlangan manzil</span>';
+        } else {
+          labelRow.textContent = 'Manzil';
+        }
 
         const textDiv = document.createElement('div');
         textDiv.className = 'addr-text';

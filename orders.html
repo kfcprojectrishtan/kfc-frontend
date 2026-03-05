@@ -524,7 +524,7 @@
       }
     };
 
-    // ✅ LANG normalize (flag ishlamasligi shu sabab bo'lishi mumkin)
+    // OK: LANG normalize (flag ishlamasligi shu sabab bo'lishi mumkin)
     let lang = (() => {
       const v = (localStorage.getItem('kfc_lang') || 'uz').trim().toLowerCase();
       return (v === 'uz' || v === 'ru') ? v : 'uz';
@@ -642,7 +642,7 @@
     function renderActiveBanner(order) {
       const now = Date.now();
 
-      // ✅ real timestamp (localStorage -> order.timestamp -> now)
+      // OK: real timestamp (localStorage -> order.timestamp -> now)
       const stored = localStorage.getItem('kfc_order_timestamp_' + order.id);
       const orderTs = stored ? Number(stored) : (order.timestamp ? Number(order.timestamp) : Date.now());
 
@@ -746,7 +746,7 @@
     function render() {
       document.getElementById('pageTitle').textContent = t('pageTitle');
 
-      // ✅ flag fail-safe
+      // OK: flag fail-safe
       const flagSrc = FLAG_IMGS[lang] || FLAG_IMGS.uz;
       document.getElementById('headerFlag').innerHTML =
         `<img src="${flagSrc}" alt="${lang.toUpperCase()}"
@@ -767,7 +767,7 @@
         return;
       }
 
-      // ✅ Sort orders by timestamp descending (newest first)
+      // OK: Sort orders by timestamp descending (newest first)
       const sorted = orders.slice().sort((a, b) => {
         const tsA = a.timestamp ? Number(a.timestamp) : 0;
         const tsB = b.timestamp ? Number(b.timestamp) : 0;
@@ -803,7 +803,7 @@
         const statusKey = 'status' + o.status.charAt(0).toUpperCase() + o.status.slice(1);
         const itemsText = (o.items || []).map(i => `${i.fullName || i.name} × ${i.quantity || i.qty || 1}`).join('<br>');
 
-        // ✅ Check if this order can still be cancelled (within 60 seconds)
+        // OK: Check if this order can still be cancelled (within 60 seconds)
         const stored = localStorage.getItem('kfc_order_timestamp_' + o.id);
         const orderTs = stored ? Number(stored) : (o.timestamp ? Number(o.timestamp) : 0);
         const elapsed = Math.floor((now - orderTs) / 1000);
