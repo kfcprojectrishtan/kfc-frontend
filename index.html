@@ -2574,7 +2574,8 @@
                     <circle cx="11" cy="11" r="8"></circle>
                     <path d="m21 21-4.35-4.35"></path>
                 </svg>
-                <input type="text" class="search-input" placeholder="Поиск">
+                <input type="text" class="search-input" id="searchInput" placeholder="Поиск"
+                    oninput="handleSearch(this.value)">
             </div>
         </div>
 
@@ -3269,6 +3270,7 @@
 
         let products = [];
         let categories = [];
+        let searchQuery = '';
 
         async function fetchInitialData() {
             try {
@@ -3969,6 +3971,15 @@
         }
 
 
+
+        function handleSearch(value) {
+            searchQuery = value.trim();
+            renderProducts();
+            // Hide categories slider when searching, show when cleared
+            const catSlider = document.getElementById('categoriesSlider');
+            if (catSlider) catSlider.parentElement.style.display = searchQuery ? 'none' : '';
+        }
+
         function renderProducts() {
             if (!categories || categories.length === 0) return;
 
@@ -3998,7 +4009,16 @@
 
             // Render product sections (only for categories that have products)
             const sectionsHTML = categories.map(cat => {
-                const catProducts = products.filter(p => p.category === cat.key);
+                const catProducts = products.filter(p => {
+                    if (p.category !== cat.key) return false;
+                    if (searchQuery) {
+                        const q = searchQuery.toLowerCase();
+                        return (p.name && p.name.toLowerCase().includes(q)) ||
+                            (p.fullName && p.fullName.toLowerCase().includes(q)) ||
+                            (p.description && p.description.toLowerCase().includes(q));
+                    }
+                    return true;
+                });
                 if (catProducts.length === 0) return '';
 
                 const productCards = catProducts.map(p => {
