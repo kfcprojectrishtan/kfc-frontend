@@ -343,13 +343,30 @@
 
   <div class="addr-list" id="addrList"></div>
 
-  <button class="add-btn" onclick="openMapModal()">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-      <line x1="12" y1="5" x2="12" y2="19" />
-      <line x1="5" y1="12" x2="19" y2="12" />
-    </svg>
-    Yangi manzil qo'shish
-  </button>
+  <div style="padding: 0 16px 16px;">
+    <button class="add-location-btn" onclick="openMapModal()"
+      style="margin-bottom: 12px; border: 2px dashed #FAB95B; background: #FFF8EE;">
+      <div class="add-location-btn-icon" style="background: #fff;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      </div>
+      <div class="add-location-btn-text">
+        <div style="font-weight: 700; color: #202124; font-size: 1rem;">Xaritadan tanlash</div>
+        <div style="font-weight: 500; color: #888; font-size: 0.8rem;">Yangi manzil qo'shish</div>
+      </div>
+    </button>
+
+    <div style="border: 1.5px solid #E0E0E0; border-radius: 16px; padding: 14px; background: #fff;">
+      <div style="font-size: 0.85rem; font-weight: 600; color: #888; margin-bottom: 8px;">Yoki manzilni qo'lda kiriting
+      </div>
+      <input type="text" id="manualAddressInput" placeholder="Masalan: Chilonzor, 1-mavze, 12-uy"
+        style="width: 100%; border: none; background: #F5F5F5; border-radius: 12px; padding: 12px; font-family: 'Poppins', sans-serif; font-size: 0.95rem; outline: none;">
+      <button onclick="saveManualAddress()"
+        style="width: 100%; margin-top: 10px; padding: 12px; background: #FAB95B; color: #fff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">Saqlash</button>
+    </div>
+  </div>
 
   <!-- ===== MAP PICKER MODAL ===== -->
   <div id="mapPickerModal"
@@ -446,6 +463,31 @@
     // ========================
     // RENDER
     // ========================
+    function saveManualAddress() {
+      const input = document.getElementById('manualAddressInput');
+      const val = input.value.trim();
+      if (!val) {
+        // Subtle visual shake if empty
+        input.style.transform = 'translateX(5px)';
+        setTimeout(() => input.style.transform = 'translateX(-5px)', 100);
+        setTimeout(() => input.style.transform = 'translateX(0)', 200);
+        return;
+      }
+      const newAddr = {
+        id: 'addr_' + Date.now(),
+        label: val,
+        lat: null,
+        lng: null,
+      };
+
+      const addresses = loadAddresses();
+      addresses.push(newAddr);
+      saveAddresses(addresses);
+
+      input.value = '';
+      selectAddress(newAddr.id); // Also auto-select and render
+    }
+
     function renderAddresses() {
       const container = document.getElementById('addrList');
       const addrs = loadAddresses();
@@ -453,15 +495,7 @@
       container.innerHTML = '';
 
       if (addrs.length === 0) {
-        const empty = document.createElement('div');
-        empty.className = 'empty-state';
-        empty.innerHTML = `
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#DDD" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                    <p>Hali manzil qo'shilmagan</p>`;
-        container.appendChild(empty);
+        container.innerHTML = '';
         return;
       }
 
