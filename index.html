@@ -3998,8 +3998,31 @@
 
             // Render product sections (only for categories that have products)
             const sectionsHTML = categories.map(cat => {
-                const catProducts = products.filter(p => p.category === cat.key).sort((a, b) => b.price - a.price);
-                if (catProducts.length === 0) return '';
+                // Filter products for this category
+                const rawProducts = products.filter(p => p.category === cat.key);
+                if (rawProducts.length === 0) return '';
+
+                // Extract base name by removing trailing numbers/counts (e.g. "Tovuq oyoqcha 18 ta" -> "Tovuq oyoqcha")
+                function getBaseName(name) {
+                    return name.replace(/\s*\d+\s*(ta|dona|шт|pc|pcs)?\.?\s*$/i, '').trim();
+                }
+
+                // Group products by base name
+                const groups = {};
+                rawProducts.forEach(p => {
+                    const base = getBaseName(p.name);
+                    if (!groups[base]) groups[base] = [];
+                    groups[base].push(p);
+                });
+
+                // Sort within each group by price descending
+                Object.values(groups).forEach(g => g.sort((a, b) => b.price - a.price));
+
+                // Sort groups by the highest price in each group (descending)
+                const sortedGroups = Object.values(groups).sort((a, b) => b[0].price - a[0].price);
+
+                // Flatten back into a single sorted array
+                const catProducts = sortedGroups.flat();
 
                 const productCards = catProducts.map(p => {
                     const inCart = cart.find(item => item.id === p.id);
