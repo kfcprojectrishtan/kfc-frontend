@@ -118,23 +118,40 @@ function onMapMoveUpdateCenter() {
 }
 
 function reverseGeocode(lat, lng) {
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-        if (status === 'OK' && results[0]) {
-            mapAddressLabel = results[0].formatted_address;
-            const coordsDisplay = document.getElementById('mapCoordsDisplay');
-            if (coordsDisplay) coordsDisplay.textContent = mapAddressLabel;
-        } else {
+    const coordsDisplay = document.getElementById('mapCoordsDisplay');
+
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=uz`)
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.address) {
+                const addr = data.address;
+                const city = addr.city || addr.town || addr.village || "";
+                const road = addr.road || addr.pedestrian || addr.street || "";
+                const house = addr.house_number || "";
+
+                let labelParts = [];
+                if (city) labelParts.push(city);
+                if (road) labelParts.push(house ? `${road} ${house}` : road);
+
+                if (labelParts.length > 0) {
+                    mapAddressLabel = labelParts.join(', ');
+                } else if (data.display_name) {
+                    mapAddressLabel = data.display_name.split(',').slice(0, 2).join(', '); // fallback
+                } else {
+                    mapAddressLabel = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+                }
+
+                if (coordsDisplay) coordsDisplay.textContent = mapAddressLabel;
+            } else {
+                mapAddressLabel = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+                if (coordsDisplay) coordsDisplay.textContent = typeof currentLang !== 'undefined' && currentLang === 'uz' ? "Manzil topilmadi, xarita orqali saqlanadi." : "Адрес не найден, сохраняется по карте.";
+            }
+        })
+        .catch(err => {
+            console.error("Geocoding err:", err);
             mapAddressLabel = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-            const coordsDisplay = document.getElementById('mapCoordsDisplay');
-            if (coordsDisplay) coordsDisplay.textContent = typeof currentLang !== 'undefined' && currentLang === 'uz' ? "Manzil topilmadi, xarita orqali saqlanadi." : "Адрес не найден, сохраняется по карте.";
-        }
-    }).catch(err => {
-        console.error("Geocoding err:", err);
-        mapAddressLabel = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-        const coordsDisplay = document.getElementById('mapCoordsDisplay');
-        if (coordsDisplay) coordsDisplay.textContent = typeof currentLang !== 'undefined' && currentLang === 'uz' ? "Manzil topilmadi, xarita orqali saqlanadi." : "Адрес не найден, сохраняется по карте.";
-    });
+            if (coordsDisplay) coordsDisplay.textContent = typeof currentLang !== 'undefined' && currentLang === 'uz' ? "Manzil topilmadi, xarita orqali saqlanadi." : "Адрес ne topilmadi, xarita orqali saqlanadi.";
+        });
 }
 
 function lockMapSelection() {

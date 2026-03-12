@@ -3738,18 +3738,25 @@
             _selectedLng = c.lng();
         }
 
-        // --- Reverse geocode ---
+        // --- Reverse geocode (Nominatim Fallback) ---
         async function reverseGeocode(lat, lng) {
-            return new Promise((resolve) => {
-                const geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-                    if (status === 'OK' && results[0]) {
-                        resolve(results[0].formatted_address);
-                    } else {
-                        resolve(null);
-                    }
-                });
-            });
+            try {
+                const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=uz`;
+                const res = await fetch(url, { headers: { 'User-Agent': 'KFCApp/1.0' } });
+                if (!res.ok) throw new Error('network');
+                const data = await res.json();
+                const addr = data.address || {};
+                const city = addr.city || addr.town || addr.village || addr.county || '';
+                const road = addr.road || addr.pedestrian || addr.street || '';
+                const house = addr.house_number || '';
+                let label = '';
+                if (city) label += city;
+                if (road) label += (label ? ', ' : '') + road;
+                if (house) label += ' ' + house;
+                return label || data.display_name || 'Manzil topilmadi';
+            } catch (e) {
+                return null;
+            }
         }
 
         // --- Confirm map (step 1 → step 2) ---
