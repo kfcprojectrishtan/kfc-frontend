@@ -3998,7 +3998,7 @@
 
             // Render product sections (only for categories that have products)
             const sectionsHTML = categories.map(cat => {
-                const catProducts = products.filter(p => p.category === cat.key);
+                const catProducts = products.filter(p => p.category === cat.key).sort((a, b) => b.price - a.price);
                 if (catProducts.length === 0) return '';
 
                 const productCards = catProducts.map(p => {
