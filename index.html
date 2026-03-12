@@ -3659,13 +3659,20 @@
 
                 setTimeout(() => {
                     if (!_mapInstance) {
-                        _mapInstance = L.map('leafletMapContainer', { zoomControl: false }).setView([_selectedLat, _selectedLng], 15);
-                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' }).addTo(_mapInstance);
-                        L.control.zoom({ position: 'bottomright' }).addTo(_mapInstance);
-                        _mapInstance.on('moveend', onMapMoveUpdateCenter);
+                        _mapInstance = new google.maps.Map(document.getElementById('leafletMapContainer'), {
+                            center: { lat: _selectedLat, lng: _selectedLng },
+                            zoom: 15,
+                            disableDefaultUI: true,
+                            zoomControl: true,
+                            zoomControlOptions: {
+                                position: google.maps.ControlPosition.RIGHT_BOTTOM
+                            }
+                        });
+                        _mapInstance.addListener('dragend', onMapMoveUpdateCenter);
+                        _mapInstance.addListener('zoom_changed', onMapMoveUpdateCenter);
                     } else {
-                        _mapInstance.invalidateSize();
-                        _mapInstance.setView([_selectedLat, _selectedLng], 15);
+                        google.maps.event.trigger(_mapInstance, 'resize');
+                        _mapInstance.setCenter({ lat: _selectedLat, lng: _selectedLng });
                     }
                 }, 150);
             }, 50);
@@ -3706,7 +3713,8 @@
                 pos => {
                     _selectedLat = pos.coords.latitude;
                     _selectedLng = pos.coords.longitude;
-                    if (_mapInstance) _mapInstance.setView([_selectedLat, _selectedLng], 17);
+                    if (_mapInstance) _mapInstance.setCenter({ lat: _selectedLat, lng: _selectedLng });
+                    _mapInstance.setZoom(17);
                     if (btn) { btn.disabled = false; btn.textContent = 'GPS bilan aniqlash'; }
                 },
                 err => {
@@ -3721,29 +3729,22 @@
         function onMapMoveUpdateCenter() {
             if (!_mapInstance) return;
             const c = _mapInstance.getCenter();
-            _selectedLat = c.lat;
-            _selectedLng = c.lng;
+            _selectedLat = c.lat();
+            _selectedLng = c.lng();
         }
 
         // --- Reverse geocode ---
         async function reverseGeocode(lat, lng) {
-            try {
-                const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=uz`;
-                const res = await fetch(url, { headers: { 'User-Agent': 'KFCApp/1.0' } });
-                if (!res.ok) throw new Error('network');
-                const data = await res.json();
-                const addr = data.address || {};
-                const city = addr.city || addr.town || addr.village || addr.county || '';
-                const road = addr.road || addr.pedestrian || addr.street || '';
-                const house = addr.house_number || '';
-                let label = '';
-                if (city) label += city;
-                if (road) label += (label ? ', ' : '') + road;
-                if (house) label += ' ' + house;
-                return label || data.display_name || 'Manzil topilmadi';
-            } catch (e) {
-                return null;
-            }
+            return new Promise((resolve) => {
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+                    if (status === 'OK' && results[0]) {
+                        resolve(results[0].formatted_address);
+                    } else {
+                        resolve(null);
+                    }
+                });
+            });
         }
 
         // --- Confirm map (step 1 → step 2) ---

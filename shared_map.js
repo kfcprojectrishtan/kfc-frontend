@@ -30,28 +30,41 @@ function openMapModal() {
     document.getElementById('mapNoteInput').value = '';
 
     if (!leafletMap) {
-        leafletMap = L.map('mapContainer', { zoomControl: false }).setView([currentCenterLat, currentCenterLng], 15);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
-        }).addTo(leafletMap);
+        leafletMap = new google.maps.Map(document.getElementById('mapContainer'), {
+            center: { lat: currentCenterLat, lng: currentCenterLng },
+            zoom: 15,
+            disableDefaultUI: true,
+            zoomControl: true,
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_BOTTOM
+            }
+        });
 
-        leafletMap.on('moveend', function () {
+        leafletMap.addListener('dragend', function () {
             const center = leafletMap.getCenter();
-            currentCenterLat = center.lat;
-            currentCenterLng = center.lng;
+            currentCenterLat = center.lat();
+            currentCenterLng = center.lng();
+            onMapMoveUpdateCenter();
+        });
+        leafletMap.addListener('zoom_changed', function () {
+            const center = leafletMap.getCenter();
+            currentCenterLat = center.lat();
+            currentCenterLng = center.lng();
             onMapMoveUpdateCenter();
         });
     } else {
-        leafletMap.setView([currentCenterLat, currentCenterLng], 15);
+        leafletMap.setCenter({ lat: currentCenterLat, lng: currentCenterLng });
+        leafletMap.setZoom(15);
     }
 
     setTimeout(() => {
-        leafletMap.invalidateSize();
-        const center = leafletMap.getCenter();
-        currentCenterLat = center.lat;
-        currentCenterLng = center.lng;
-        onMapMoveUpdateCenter();
+        if (leafletMap) {
+            google.maps.event.trigger(leafletMap, 'resize');
+            const center = leafletMap.getCenter();
+            currentCenterLat = center.lat();
+            currentCenterLng = center.lng();
+            onMapMoveUpdateCenter();
+        }
     }, 300);
 }
 
@@ -79,7 +92,10 @@ function useGPS() {
             currentCenterLat = pos.coords.latitude;
             currentCenterLng = pos.coords.longitude;
             isUsingGps = true;
-            leafletMap.setView([currentCenterLat, currentCenterLng], 18);
+            if (leafletMap) {
+                leafletMap.setCenter({ lat: currentCenterLat, lng: currentCenterLng });
+                leafletMap.setZoom(18);
+            }
         },
         (err) => {
             alert(currentLang === 'uz' ? "GPS ruxsati berilmadi yoki xato yuz berdi" : "Разрешение на GPS не предоставлено или произошла ошибка");
@@ -101,35 +117,23 @@ function onMapMoveUpdateCenter() {
 }
 
 function reverseGeocode(lat, lng) {
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data && data.address) {
-                const addr = data.address;
-                const city = addr.city || addr.town || addr.village || "";
-                const road = addr.road || "";
-                const house = addr.house_number || "";
-
-                let labelParts = [];
-                if (city) labelParts.push(city);
-                if (road) labelParts.push(house ? `${road} ${house}` : road);
-
-                if (labelParts.length > 0) {
-                    mapAddressLabel = labelParts.join(', ');
-                } else {
-                    mapAddressLabel = data.display_name.split(',').slice(0, 2).join(', '); // fallback
-                }
-                document.getElementById('mapCoordsDisplay').textContent = mapAddressLabel;
-            } else {
-                mapAddressLabel = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-                document.getElementById('mapCoordsDisplay').textContent = currentLang === 'uz' ? "Manzil topilmadi, xarita orqali saqlanadi." : "Адрес не найден, сохраняется по карте.";
-            }
-        })
-        .catch(err => {
-            console.error("Geocoding err:", err);
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+            mapAddressLabel = results[0].formatted_address;
+            const coordsDisplay = document.getElementById('mapCoordsDisplay');
+            if (coordsDisplay) coordsDisplay.textContent = mapAddressLabel;
+        } else {
             mapAddressLabel = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-            document.getElementById('mapCoordsDisplay').textContent = currentLang === 'uz' ? "Manzil topilmadi, xarita orqali saqlanadi." : "Адрес не найден, сохраняется по карте.";
-        });
+            const coordsDisplay = document.getElementById('mapCoordsDisplay');
+            if (coordsDisplay) coordsDisplay.textContent = typeof currentLang !== 'undefined' && currentLang === 'uz' ? "Manzil topilmadi, xarita orqali saqlanadi." : "Адрес не найден, сохраняется по карте.";
+        }
+    }).catch(err => {
+        console.error("Geocoding err:", err);
+        mapAddressLabel = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+        const coordsDisplay = document.getElementById('mapCoordsDisplay');
+        if (coordsDisplay) coordsDisplay.textContent = typeof currentLang !== 'undefined' && currentLang === 'uz' ? "Manzil topilmadi, xarita orqali saqlanadi." : "Адрес не найден, сохраняется по карте.";
+    });
 }
 
 function lockMapSelection() {
