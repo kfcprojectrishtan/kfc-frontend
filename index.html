@@ -3221,10 +3221,29 @@
             <div id="savedLocationsList"></div>
 
             <!-- Add location button -->
-            <button id="addLocationBtn" class="add-location-btn" onclick="openMapModal()">
-                <div class="add-location-btn-icon">+</div>
-                <span class="add-location-btn-text">Yangi manzil qo'shish</span>
-            </button>
+            <div style="padding: 0 16px 16px;">
+                <button id="addLocationBtn" class="add-location-btn" onclick="openMapModal()"
+                    style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px; padding: 14px 16px; margin-bottom: 24px; border: 2px dashed #D0D0D0; border-radius: 12px; background: transparent; width: 100%; margin-top: 10px;">
+                    <div
+                        style="width: 44px; height: 44px; background: #F5F5F5; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FAB95B" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                    </div>
+                    <div style="font-weight: 700; color: #5B636A; font-size: 1.05rem;">Yangi manzil qo'shish</div>
+                </button>
+
+                <div style="border: 1.5px solid #E0E0E0; border-radius: 16px; padding: 14px; background: #fff;">
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #888; margin-bottom: 8px;">Yoki manzilni
+                        qo'lda kiriting</div>
+                    <input type="text" id="manualAddressInput" placeholder="Masalan: Chilonzor, 1-mavze, 12-uy"
+                        style="width: 100%; border: none; background: #F5F5F5; border-radius: 12px; padding: 12px; font-family: 'Poppins', sans-serif; font-size: 0.95rem; outline: none; box-sizing: border-box;">
+                    <button onclick="saveManualAddress()"
+                        style="width: 100%; margin-top: 10px; padding: 12px; background: #FAB95B; color: #fff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">Saqlash</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -3772,6 +3791,33 @@
             updateHeaderLocation();
         }
 
+        function saveManualAddress() {
+            const input = document.getElementById('manualAddressInput');
+            if (!input) return;
+            const val = input.value.trim();
+            if (!val) {
+                input.style.transform = 'translateX(5px)';
+                setTimeout(() => input.style.transform = 'translateX(-5px)', 100);
+                setTimeout(() => input.style.transform = 'translateX(0)', 200);
+                return;
+            }
+            const newAddr = {
+                id: 'addr_' + Date.now(),
+                label: val,
+                lat: null,
+                lng: null,
+            };
+
+            const list = loadAddresses();
+            list.push(newAddr);
+            saveAddresses(list);
+
+            input.value = '';
+            setSelectedId(newAddr.id);
+            renderAddresses();
+            updateHeaderLocation();
+        }
+
         // --- Auto GPS detection on page load ---
         // Runs once for logged-in users who have no saved addresses yet
         async function autoDetectGPS() {
@@ -3842,11 +3888,7 @@
             const selId = getSelectedId();
 
             if (addrs.length === 0) {
-                const empty = document.createElement('div');
-                empty.className = 'empty-locations';
-                empty.innerHTML = '<div class="empty-locations-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#DDD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div><p>Manzillar yo\'q</p>';
                 list.innerHTML = '';
-                list.appendChild(empty);
                 return;
             }
 
