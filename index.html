@@ -8,8 +8,14 @@
     <meta name="theme-color" content="#FFFFFF">
     <title>M5 Menu</title>
     <!-- Google Maps JS API -->
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7VhjDfPWmJC37dSrpMEOCv5T61ts1cXE&libraries=places"></script>
+    <script>
+        function initMap() {
+            // Callback placeholder to satisfy loading=async warning.
+            // Map is instantiated dynamically when needed.
+        }
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7VhjDfPWmJC37dSrpMEOCv5T61ts1cXE&libraries=places&loading=async&callback=initMap"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
