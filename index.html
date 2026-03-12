@@ -3704,6 +3704,8 @@
             const modal = document.getElementById('mapPickerModal');
             if (modal) modal.style.display = 'none';
             document.body.style.overflow = '';
+            // Re-open location sheet when closing map
+            openLocationSheet();
         }
 
         // --- GPS button ---

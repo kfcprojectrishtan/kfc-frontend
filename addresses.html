@@ -572,6 +572,10 @@
     function closeMapModal() {
       const modal = document.getElementById('mapPickerModal');
       if (modal) modal.style.display = 'none';
+      // Re-open location sheet when closing map
+      if (typeof openLocationSheet === 'function') {
+        openLocationSheet();
+      }
     }
 
     function _showMapStep() {
