@@ -405,7 +405,7 @@
 
         .product-image-container {
             width: 100%;
-            height: 120px;
+            aspect-ratio: 1 / 1;
             background: #FFFFFF;
             border-radius: 12px;
             position: relative;
@@ -431,6 +431,8 @@
             height: 100%;
             object-fit: contain;
             display: block;
+            transform: scale(1.05);
+            mix-blend-mode: multiply;
         }
 
         .category-image img,
