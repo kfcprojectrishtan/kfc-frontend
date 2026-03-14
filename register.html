@@ -794,7 +794,7 @@
       document.getElementById('signup-otp-err').textContent = '';
 
       const btn = document.getElementById('signup-verify-btn');
-      btn.disabled = true; btn.textContent = '⏳ Tekshirilmoqda...';
+      btn.disabled = true; btn.textContent = ' Tekshirilmoqda...';
 
       try {
         const res = await fetch(`${API_URL}/api/otp/verify`, {
@@ -909,7 +909,7 @@
       document.getElementById('login-otp-err').textContent = '';
 
       const btn = document.getElementById('login-verify-btn');
-      btn.disabled = true; btn.textContent = '⏳ Tekshirilmoqda...';
+      btn.disabled = true; btn.textContent = 'Tekshirilmoqda...';
 
       try {
         const res = await fetch(`${API_URL}/api/otp/verify`, {
