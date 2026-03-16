@@ -744,7 +744,8 @@
         });
         const data = await res.json();
         const errMsg = getErrMsg(data);
-        const isNotReg = res.status === 404 || errMsg.includes('not_registered');
+        const errCode = data?.detail?.error || '';
+        const isNotReg = res.status === 404 || errCode === 'not_registered' || errMsg.includes('not_registered');
 
         if (res.ok) {
           clearOtp('signup-otp-container');
@@ -755,7 +756,7 @@
           showPanel('panel-signup-otp');
           startTimer('signupTimer', 'signup-timer', 'signup-resend-btn');
           setTimeout(() => document.querySelector('#signup-otp-container input').focus(), 300);
-        } else if (res.status === 400 && (errMsg.includes('exists') || errMsg.includes('user_already'))) {
+        } else if (res.status === 400 && (errCode === 'user_already_exists' || errMsg.includes('allaqachon'))) {
           // Backend dan ham double-check
           document.getElementById('signup-phone-err').innerHTML =
             "<span style='color:#E53935;font-weight:700;'>Siz allaqachon ro'yxatdan o'tgansiz.</span> " +
@@ -920,12 +921,14 @@
 
         if (res.ok && data.success) {
           if (window.loginTimer) clearInterval(window.loginTimer);
-          if (data.user && data.user.firstName) {
+          if (data.user) {
             localStorage.setItem('kfc_user', JSON.stringify({
-              phone: data.user.phone, firstName: data.user.firstName,
-              lastName: data.user.lastName || '', registeredAt: new Date().toISOString()
+              phone: data.user.phone || verifiedPhone,
+              firstName: data.user.firstName || data.user.first_name || 'Foydalanuvchi',
+              lastName: data.user.lastName || data.user.last_name || '',
+              registeredAt: new Date().toISOString()
             }));
-            localStorage.setItem('kfc_verified_phone', data.user.phone);
+            localStorage.setItem('kfc_verified_phone', data.user.phone || verifiedPhone);
             window.location.replace(sessionStorage.getItem('reg_from') || 'index.html');
           } else {
             document.getElementById('login-otp-err').textContent = 'Xatolik yuz berdi. Qaytadan urining.';
