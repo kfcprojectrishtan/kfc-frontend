@@ -360,6 +360,11 @@
       text-decoration: none;
     }
   </style>
+    <script>
+        if (location.pathname.endsWith('/register.html')) {
+            location.replace('/register/');
+        }
+    </script>
 </head>
 
 <body>
@@ -846,7 +851,7 @@
         registeredAt: new Date().toISOString()
       }));
       localStorage.setItem('kfc_verified_phone', verifiedPhone);
-      window.location.href = sessionStorage.getItem('reg_from') || 'index.html';
+      window.location.href = sessionStorage.getItem('reg_from') || '/';
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -929,7 +934,7 @@
               registeredAt: new Date().toISOString()
             }));
             localStorage.setItem('kfc_verified_phone', data.user.phone || verifiedPhone);
-            window.location.replace(sessionStorage.getItem('reg_from') || 'index.html');
+            window.location.replace(sessionStorage.getItem('reg_from') || '/');
           } else {
             document.getElementById('login-otp-err').textContent = 'Xatolik yuz berdi. Qaytadan urining.';
             btn.disabled = false; btn.innerHTML = ICON_CHECK + ' Tasdiqlash';

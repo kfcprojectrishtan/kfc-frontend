@@ -2639,6 +2639,11 @@
             z-index: 1000 !important;
         }
     </style>
+    <script>
+        if (location.pathname.endsWith('/index.html')) {
+            location.replace('/');
+        }
+    </script>
 </head>
 
 <body>
@@ -2801,7 +2806,7 @@
             </div>
         </div>
         <div class="menu-items">
-            <div class="menu-item" onclick="window.location.href='orders.html'; toggleSideMenu();">
+            <div class="menu-item" onclick="window.location.href='/orders/'; toggleSideMenu();">
                 <div class="menu-item-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -2816,7 +2821,7 @@
                 </svg>
             </div>
 
-            <div class="menu-item" onclick="window.location.href='addresses.html'; toggleSideMenu();">
+            <div class="menu-item" onclick="window.location.href='/addresses/'; toggleSideMenu();">
                 <div class="menu-item-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -4481,8 +4486,8 @@
         }
 
         function goToRegister() {
-            sessionStorage.setItem('reg_from', 'index.html');
-            window.location.href = 'register.html';
+            sessionStorage.setItem('reg_from', '/');
+            window.location.href = '/register/';
         }
 
         function logoutUser() {
@@ -5109,7 +5114,7 @@
             if (cancelTimerInterval) clearInterval(cancelTimerInterval);
             if (statusPollInterval) { clearInterval(statusPollInterval); statusPollInterval = null; }
             document.getElementById('successOverlay').classList.remove('active');
-            window.location.href = 'orders.html';
+            window.location.href = '/orders/';
         }
 
         function showPage(pageId) {
@@ -5179,7 +5184,7 @@
         }
         function goToRegister() {
             dismissLoginPrompt();
-            window.location.href = 'register.html';
+            window.location.href = '/register/';
         }
 
         init();
