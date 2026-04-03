@@ -5,16 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Account Suspended</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-    }
-
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #f2f2f2; }
     .top {
       height: 155px;
       background: #f2f2f2;
@@ -25,140 +17,43 @@
       gap: 22px;
       color: #cfcfcf;
     }
-
-    .top h1 {
-      margin: 0;
-      font-size: 72px;
-      font-weight: 400;
-      color: #cfcfcf;
-    }
-
-    .user-icon {
-      position: relative;
-      width: 150px;
-      height: 95px;
-    }
-
+    .top h1 { margin: 0; font-size: 72px; font-weight: 400; color: #cfcfcf; }
+    .user-icon { position: relative; width: 150px; height: 95px; }
     .user-icon .head {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: #cfcfcf;
-      position: absolute;
-      top: -8px;
-      left: 22px;
+      width: 72px; height: 72px; border-radius: 50%;
+      background: #cfcfcf; position: absolute; top: -8px; left: 22px;
     }
-
     .user-icon .body {
-      width: 96px;
-      height: 48px;
-      background: #cfcfcf;
+      width: 96px; height: 48px; background: #cfcfcf;
       border-radius: 28px 28px 12px 12px;
-      position: absolute;
-      bottom: 0;
-      left: 10px;
+      position: absolute; bottom: 0; left: 10px;
     }
-
-    .user-icon .x::before,
-    .user-icon .x::after {
-      content: "";
-      position: absolute;
-      width: 10px;
-      height: 56px;
-      background: #cfcfcf;
-      border-radius: 4px;
-      top: 4px;
-      right: 18px;
+    .user-icon .x::before, .user-icon .x::after {
+      content: ""; position: absolute;
+      width: 10px; height: 56px;
+      background: #cfcfcf; border-radius: 4px;
+      top: 4px; right: 18px;
     }
-
-    .user-icon .x::before {
-      transform: rotate(45deg);
-    }
-
-    .user-icon .x::after {
-      transform: rotate(-45deg);
-    }
-
+    .user-icon .x::before { transform: rotate(45deg); }
+    .user-icon .x::after { transform: rotate(-45deg); }
     .banner {
       height: 270px;
       background: #2f4358;
       display: flex;
       overflow: hidden;
     }
-
     .warning-side {
       width: 270px;
       height: 270px;
-      position: relative;
       flex-shrink: 0;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
-    .warning-triangle {
-      position: absolute;
-      left: -40px;
-      top: 0;
-      width: 240px;
-      height: 220px;
-      border-left: 120px solid transparent;
-      border-right: 120px solid transparent;
-      border-bottom: 220px solid #617286;
-      transform: rotate(180deg);
-      opacity: 0.95;
-    }
-
-    .warning-triangle::after {
-      content: "";
-      position: absolute;
-      left: -92px;
-      top: 37px;
-      width: 0;
-      height: 0;
-      border-left: 92px solid transparent;
-      border-right: 92px solid transparent;
-      border-bottom: 168px solid #2f4358;
-    }
-
-    .warning-mark {
-      position: absolute;
-      left: 58px;
-      top: 48px;
-      color: #6d7f95;
-      font-size: 190px;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .warning-dot {
-      position: absolute;
-      left: 92px;
-      top: 182px;
-      width: 26px;
-      height: 26px;
-      background: #6d7f95;
-      border-radius: 50%;
-    }
-
-    .content {
-      padding: 30px 30px 0 0;
-      color: #fff;
-    }
-
-    .content h2 {
-      margin: 0 0 28px;
-      font-size: 32px;
-      font-weight: 700;
-    }
-
-    .content p {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .content a {
-      color: #fff;
-      text-decoration: underline;
-    }
+    .content { padding: 30px 30px 0 0; color: #fff; }
+    .content h2 { margin: 0 0 28px; font-size: 32px; font-weight: 700; }
+    .content p { margin: 0; font-size: 24px; }
+    .content a { color: #fff; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -170,14 +65,20 @@
     </div>
     <h1>Account Suspended</h1>
   </div>
-
   <div class="banner">
     <div class="warning-side">
-      <div class="warning-triangle"></div>
-      <div class="warning-mark">!</div>
-      <div class="warning-dot"></div>
+      <svg width="230" height="230" viewBox="0 0 230 230" xmlns="http://www.w3.org/2000/svg">
+        <polygon
+          points="10,20 220,20 115,210"
+          fill="none"
+          stroke="#617286"
+          stroke-width="22"
+          stroke-linejoin="miter"
+        />
+        <rect x="97" y="48" width="36" height="100" rx="4" fill="#7a8fa3" />
+        <circle cx="115" cy="175" r="14" fill="#7a8fa3" />
+      </svg>
     </div>
-
     <div class="content">
       <h2>This Account has been suspended.</h2>
       <p><a href="#">Contact your hosting provider</a> for more information.</p>
