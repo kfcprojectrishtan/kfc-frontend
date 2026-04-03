@@ -3,71 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 - Page Not Found</title>
+  <title>404</title>
   <style>
-    * {
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
       font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #111827, #1f2937);
-      color: #ffffff;
+      background: #fff;
+      color: #000;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .container {
       text-align: center;
-      padding: 40px;
-      max-width: 600px;
     }
 
-    .code {
-      font-size: 120px;
-      font-weight: bold;
-      color: #f59e0b;
-      line-height: 1;
+    .box h1 {
+      font-size: 72px;
+      margin: 0;
     }
 
-    h1 {
-      font-size: 36px;
-      margin: 20px 0 10px;
-    }
-
-    p {
+    .box p {
       font-size: 18px;
-      color: #d1d5db;
-      margin-bottom: 30px;
+      margin: 10px 0 20px;
     }
 
-    .btn {
-      display: inline-block;
-      padding: 14px 28px;
-      background: #f59e0b;
-      color: #111827;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #fbbf24;
-      transform: translateY(-2px);
+    .box a {
+      color: #000;
+      text-decoration: underline;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="code">404</div>
-    <h1>Page Not Found</h1>
-    <p>Sorry, the page you are looking for doesn’t exist or has been moved.</p>
-    <a href="/" class="btn">Go Home</a>
+  <div class="box">
+    <h1>404</h1>
+    <p>Page not found</p>
+    <a href="/">Go back home</a>
   </div>
 </body>
 </html>
