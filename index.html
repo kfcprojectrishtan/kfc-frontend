@@ -3,43 +3,237 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404</title>
+  <title>Account Suspended</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      padding: 0;
       font-family: Arial, sans-serif;
-      background: #fff;
-      color: #000;
-      height: 100vh;
+      background: #f3f3f3;
+      color: #222;
+    }
+
+    .top {
+      height: 155px;
+      background: #f3f3f3;
+      border-top: 2px solid #4a4a4a;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
+      gap: 24px;
+      color: #cfcfcf;
     }
 
-    .box h1 {
-      font-size: 72px;
+    .top-icon {
+      position: relative;
+      width: 150px;
+      height: 95px;
+    }
+
+    .head {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #cfcfcf;
+      position: absolute;
+      top: -8px;
+      left: 20px;
+    }
+
+    .body-icon {
+      width: 96px;
+      height: 48px;
+      background: #cfcfcf;
+      border-radius: 30px 30px 12px 12px;
+      position: absolute;
+      bottom: 0;
+      left: 8px;
+    }
+
+    .cross {
+      position: absolute;
+      right: 0;
+      top: 5px;
+      width: 54px;
+      height: 54px;
+    }
+
+    .cross::before,
+    .cross::after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      top: 0;
+      width: 10px;
+      height: 54px;
+      background: #cfcfcf;
+      border-radius: 4px;
+    }
+
+    .cross::before {
+      transform: rotate(45deg);
+    }
+
+    .cross::after {
+      transform: rotate(-45deg);
+    }
+
+    .top h1 {
       margin: 0;
+      font-size: 72px;
+      font-weight: 400;
+      color: #cfcfcf;
+      line-height: 1;
     }
 
-    .box p {
-      font-size: 18px;
-      margin: 10px 0 20px;
+    .banner {
+      height: 270px;
+      background: #2f4155;
+      display: flex;
+      align-items: stretch;
     }
 
-    .box a {
-      color: #000;
-      text-decoration: underline;
-      font-size: 16px;
+    .left-warning {
+      width: 280px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .triangle {
+      position: absolute;
+      left: -10px;
+      top: 0;
+      width: 0;
+      height: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-bottom: 270px solid #5d6c7d;
+      transform: rotate(180deg);
+      opacity: 0.8;
+    }
+
+    .triangle-inner {
+      position: absolute;
+      left: 38px;
+      top: 34px;
+      width: 0;
+      height: 0;
+      border-left: 95px solid transparent;
+      border-right: 95px solid transparent;
+      border-bottom: 175px solid #2f4155;
+      transform: rotate(180deg);
+    }
+
+    .exclamation {
+      position: absolute;
+      left: 74px;
+      top: 68px;
+      color: #5d6c7d;
+      font-size: 210px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .content {
+      padding: 34px 30px 0 0;
+      color: #fff;
+    }
+
+    .content h2 {
+      margin: 0 0 28px;
+      font-size: 34px;
+      font-weight: 700;
+    }
+
+    .content p {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.4;
+    }
+
+    .content a {
+      color: #fff;
+    }
+
+    @media (max-width: 900px) {
+      .top {
+        height: auto;
+        padding: 24px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .top h1 {
+        font-size: 42px;
+        text-align: center;
+      }
+
+      .banner {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .left-warning {
+        width: 100%;
+        height: 180px;
+      }
+
+      .triangle {
+        left: 50%;
+        transform: translateX(-50%) rotate(180deg);
+      }
+
+      .triangle-inner {
+        left: 50%;
+        transform: translateX(-50%) rotate(180deg);
+      }
+
+      .exclamation {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .content {
+        padding: 24px 20px 30px;
+      }
+
+      .content h2 {
+        font-size: 28px;
+      }
+
+      .content p {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>404</h1>
-    <p>Page not found</p>
-    <a href="/">Go back home</a>
+  <div class="top">
+    <div class="top-icon">
+      <div class="head"></div>
+      <div class="body-icon"></div>
+      <div class="cross"></div>
+    </div>
+    <h1>Account Suspended</h1>
+  </div>
+
+  <div class="banner">
+    <div class="left-warning">
+      <div class="triangle"></div>
+      <div class="triangle-inner"></div>
+      <div class="exclamation">!</div>
+    </div>
+
+    <div class="content">
+      <h2>This Account has been suspended.</h2>
+      <p>
+        <a href="#">Contact your hosting provider</a> for more information.
+      </p>
+    </div>
   </div>
 </body>
 </html>
