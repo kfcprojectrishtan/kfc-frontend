@@ -9,36 +9,54 @@
     body { margin: 0; font-family: Arial, sans-serif; background: #f2f2f2; }
 
     .top {
-      height: 155px;
+      height: 80px;
       background: #f2f2f2;
-      border-top: 2px solid #555;
+      border-top: 2px solid #ccc;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 22px;
-      color: #cfcfcf;
-      overflow: hidden;
+      justify-content: flex-start;
+      padding: 0 20px;
+      gap: 12px;
     }
-    .top h1 { margin: 0; font-size: 72px; font-weight: 400; color: #cfcfcf; white-space: nowrap; }
+    .top h1 {
+      margin: 0;
+      font-size: 36px;
+      font-weight: 400;
+      color: #c8c8c8;
+      white-space: nowrap;
+    }
 
-    .user-icon { position: relative; width: 150px; height: 95px; flex-shrink: 0; }
+    .user-icon {
+      position: relative;
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+    }
     .user-icon .head {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: #cfcfcf; position: absolute; top: -8px; left: 22px;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: #c8c8c8;
+      position: absolute;
+      top: 0; left: 4px;
     }
     .user-icon .body {
-      width: 96px; height: 48px; background: #cfcfcf;
-      border-radius: 28px 28px 12px 12px;
-      position: absolute; bottom: 0; left: 10px;
+      width: 36px; height: 18px;
+      background: #c8c8c8;
+      border-radius: 12px 12px 5px 5px;
+      position: absolute;
+      bottom: 6px; left: 0;
     }
-    .user-icon .x::before, .user-icon .x::after {
-      content: ""; position: absolute;
-      width: 10px; height: 56px;
-      background: #cfcfcf; border-radius: 4px;
-      top: 4px; right: 18px;
+    .user-icon .x::before,
+    .user-icon .x::after {
+      content: "";
+      position: absolute;
+      width: 4px; height: 22px;
+      background: #c8c8c8;
+      border-radius: 3px;
+      top: 2px; right: 2px;
     }
     .user-icon .x::before { transform: rotate(45deg); }
-    .user-icon .x::after { transform: rotate(-45deg); }
+    .user-icon .x::after  { transform: rotate(-45deg); }
 
     .banner {
       min-height: 270px;
@@ -61,21 +79,6 @@
 
     /* ── Mobile ── */
     @media (max-width: 600px) {
-      .top {
-        height: 80px;
-        gap: 10px;
-        justify-content: flex-start;
-        padding: 0 16px;
-      }
-      .top h1 { font-size: 28px; }
-
-      .user-icon { width: 42px; height: 52px; }
-      .user-icon .head { width: 30px; height: 30px; top: 0; left: 6px; }
-      .user-icon .body { width: 42px; height: 22px; border-radius: 14px 14px 6px 6px; left: 0; }
-      .user-icon .x::before, .user-icon .x::after {
-        width: 5px; height: 26px; top: 2px; right: 6px;
-      }
-
       .banner { flex-direction: column; min-height: unset; }
       .warning-side { display: none; }
       .content { padding: 24px 20px; }
